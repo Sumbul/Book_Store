@@ -1,0 +1,10 @@
+﻿@{
+    WebSecurity.Logout();
+    Session.Remove("username");
+    Session.Remove("cart");
+    var db=Database.Open("BookStore");
+    var query="DELETE FROM Cart";
+    db.Execute(query);
+    Response.Redirect("~/Default.cshtml");
+    
+}

@@ -1,0 +1,101 @@
+﻿@{
+     Layout="~/Shared/_LayoutPage2.cshtml";
+     var db=Database.Open("BookStore");
+     var query="SELECT * FROM Cart";
+      //var ProductId  = UrlData[0];
+   int total=0;
+    var row = db.Query(query);
+    foreach(var ans in row)
+    {
+        total+= (Convert.ToInt32(ans.Price))*(Convert.ToInt32(ans.Qty));
+    }
+    int ct=0;
+    /*var Name = row.Name;
+    var Description = row.Description;
+    var Price = row.Price;*/
+}
+@section Styles{
+<link rel="stylesheet" type="text/css" href="../style.css" />
+	<link rel="stylesheet" href="lightbox.css" type="text/css" media="screen" />
+	<!--Plugin for Zoom-->
+	<script src="js/prototype.js" type="text/javascript"></script>
+	<script src="js/scriptaculous.js?load=effects" type="text/javascript"></script>
+	<script src="js/lightbox.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/java.js"></script>
+    <!--End of plugin-->
+}
+
+@section bill{
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+              <input type="hidden" name="cmd" value="_cart">
+              <input type="hidden" name="upload" value="1">
+              <input type="hidden" name="business" value="tempuse110@gmail.com">
+     <div class="title"><span class="title_icon"><img src="images/bullet1.gif" alt="" title="" /></span>Billing Information</div>
+        
+        	<div class="feat_prod_box_details">
+            
+            <table class="cart_table">
+            	<tr class="cart_title">
+                	
+                	<td>Book name</td>
+                    <td>Unit price</td>
+                    <td>Qty</td>
+                                  
+                </tr>
+               
+                        
+            	
+                    @foreach(var data in row)
+                    {
+                        ct++;
+                        <tr>
+                      <input type="hidden" name="item_name_@ct" value="@data.Book_name">
+                      <input type="hidden" name="amount_@ct" value="@data.Price">
+                	<td>@data.Book_name</td>
+                	<td>$ @data.Price</td>
+                    <td>@data.Qty</td>
+                     <td></td>
+                        </tr>
+                    }              
+                                  
+            <!----	<tr>
+                	<td><a href="details.html"><img src="images/cart_thumb.gif" alt="" title="" border="0" class="cart_thumb" /></a></td>
+                	<td>Books</td>
+                    <td>100$</td>
+                    <td>1</td>
+                    <td>100$</td>               
+                </tr>
+
+                <tr>
+                <td colspan="4" class="cart_total"><span class="red">TOTAL SHIPPING:</span></td>
+                <td> 250$</td>                
+                </tr> --> 
+                
+                <tr>
+                <td colspan="4" class="cart_total"><span class="red">TOTAL:</span></td>
+                <td> $@total</td>                
+                </tr>              
+            
+            </table>
+                <br></br>
+                <br></br>
+                <br></br>
+                <input type="image"
+                src="https://www.paypal.com/en_US/i/btn/btn_buynow_LG.gif"
+                border="0" name="submit" alt="">
+           <!---- <a href="#" class="continue">&lt; continue</a>
+            <a href="#" class="checkout">checkout &gt;</a>-->
+            
+
+             
+            
+            </div>	
+            
+              
+
+            
+
+            
+        <div class="clear"></div>
+</form>
+}

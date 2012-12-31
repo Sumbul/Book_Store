@@ -1,0 +1,82 @@
+﻿@{
+     Layout="~/Shared/_LayoutAdmin.cshtml";
+     var db = Database.Open("BookStore");
+     var selectQueryString = "SELECT * FROM Products ORDER BY Category";
+}
+
+@section Styles{
+<link rel="stylesheet" type="text/css" href="../style.css" />
+	<link rel="stylesheet" href="../lightbox.css" type="text/css" media="screen" />
+<style>
+    .heading{
+        margin-left: 50px;
+        color:#734633;
+        padding:0px;
+        float:left;
+        font-size:20px;
+    }
+    .product
+    {
+        margin-left: 150px;
+        
+        padding:0px;
+        float:left;  
+    }
+    .tab
+    {
+        width:600px;
+        border:1px #CCCCCC;
+        text-align:left;
+    }
+    th {
+        text-align:center;
+    }
+</style>
+	
+}
+
+@section product1{
+
+ <br></br>
+<div class="heading"><img src="~/images/bullet1.gif" alt="" title="" />DELETE A PRODUCT</div>
+        <br></br>
+<br></br>
+
+        	<div class="product">
+            <form method="post" action="" name="form">
+            <table class="tab" border="1">
+            
+            <tr class="cart_title">
+               
+                <th>Name</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Price</th>
+                 <th>&nbsp;</th>
+            </tr>
+      
+        @foreach (var row in db.Query(selectQueryString)) {
+          <tr>
+            
+            <td> @row.Name</td>
+            <td> @row.Category</td>
+            <td>@row.Description</td>
+            <td> $@row.Price</td>
+            <td><a href="@Href("~/Admin/Admin_Delete.cshtml", row.Id)">Delete</a></td>
+          </tr>
+        }
+      
+    </table>
+  </form>
+                
+            
+            
+            </div>	
+            
+              
+
+            
+
+            
+        <div class="clear"></div>
+ }

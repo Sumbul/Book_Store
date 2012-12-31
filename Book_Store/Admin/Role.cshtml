@@ -1,0 +1,91 @@
+﻿@{
+Layout="~/Shared/_LayoutAdmin.cshtml";
+if(IsPost)
+{
+var newRole = Request["roleName"];
+    // Add new role
+    if(!newRole.IsEmpty() && !Roles.RoleExists(newRole))
+    {
+    Roles.CreateRole(newRole);
+    //Response.Redirect("~/Admin/Role.cshtml");
+    }
+}
+var currentRoles = Roles.GetAllRoles();
+}
+
+@section Styles{
+<link rel="stylesheet" type="text/css" href="~/style.css" />
+	<link rel="stylesheet" href="~/lightbox.css" type="text/css" media="screen" />
+<style>
+    .heading{
+        margin-left: 50px;
+        color:#734633;
+        padding:0px;
+        float:left;
+        font-size:20px;
+    }
+    .product
+    {
+        margin-left: 150px;
+        
+        padding:0px;
+        float:left;  
+    }
+</style>
+	
+}
+
+@section product1{
+<br></br><br></br>
+    <div class="heading"><span class="title_icon"><img src="~/images/bullet1.gif" alt="" title="" /></span>ADD ROLES</div>
+ <br></br>
+<br></br>
+<div class="product">
+<div class="feat_prod_box_details">
+    
+            <div class="contact_form">
+                <div class="form_subtitle">New Roles</div>
+                     <div class="form_row">
+                         <h2>Current Roles</h2>
+    @if(currentRoles.Length > 0)
+    {
+        @* List all current roles *@
+        <ul>
+        @foreach(var role in currentRoles)
+        {
+            <li><a href="roleDetails?roleName=@role">@role</a></li>
+        }
+        </ul>
+    }
+    else
+    {
+            <p>No roles currently defined.</p>
+    }
+                     </div>
+                    <div class="form_row">
+                    <form action="Role" method="post" enctype="multipart/form-data">
+                        <label for="roleName">Role Name: </label>
+                        <input id="roleName" name="roleName" type="text" value="" />
+                        <input type="submit" value="Add Role" class="register" name="addRole" />
+
+                        <br></br>
+                    </form>
+                    </div>   
+
+                       
+                    
+                </div>
+            
+            </div>	
+            
+              
+</div>
+         <br></br><br></br>   
+
+            
+        <div class="clear"></div>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+}

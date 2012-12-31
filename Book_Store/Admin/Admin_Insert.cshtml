@@ -1,0 +1,164 @@
+﻿@{
+    Layout="~/Shared/_LayoutPage2.cshtml";
+    var Name="";
+    var Description="";
+    var Book_Pic="";
+    var Price="";
+    var Category="";
+    var Zoom="";
+    var Color="";
+
+    Validation.RequireField("Name", "Product name is required.");
+    Validation.RequireField("Description", "Product description is required.");
+    Validation.RequireField("Price", "Product price is required.");
+    Validation.RequireField("Category", "Product category is required.");
+    //Validation.RequireField("Color", "Product color is required.");
+   
+    Name=Request.Form["Name"];
+    Description=Request.Form["Description"];
+    Price=Request.Form["Price"];
+    Category=Request.Form["Category"];
+    //Color=Request.Form["Color"];
+
+    WebImage photo = null;
+    var newFileName = "";
+    var imagePath = "";
+    var imageThumbPath="";
+
+
+   
+
+    var db = Database.Open("BookStore");
+    var q = "SELECT * FROM Categories ORDER BY Category_Id";
+    var data = db.Query(q);
+
+    
+    if (IsPost && Validation.IsValid()) {
+         photo = WebImage.GetImageFromRequest();
+        if(photo != null){
+            newFileName =    Path.GetFileName(photo.FileName);
+            
+            Book_Pic = @"images/" + newFileName;
+           //var Image = "../images/" + newFileName;
+            photo.Save(@"~\"+Book_Pic);
+
+            // zoom image
+            imageThumbPath = @"images\Zoom\" + newFileName;
+            photo.Resize(width: 200, height: 300, preserveAspectRatio: false,
+               preventEnlarge: false);
+            photo.Save(@"~\" + imageThumbPath);
+            
+        }
+       var Image = "~/images/" + newFileName;
+       Zoom="~/images/Zoom/"+newFileName;
+
+        if(ModelState.IsValid) {
+            var insertQuery = "INSERT INTO Products (Name, Description, Price,Book_Pic,Category,Zoom) " +
+                "VALUES (@0, @1, @2,@3,@4,@5)";
+            db.Execute(insertQuery, Name, Description, Price,Image,Category,Zoom);
+            // Display the page that lists products.
+            //Response.Write("Product inserted successfully :)");
+            //Response.Redirect("~/Product.cshtml");
+            
+            <br></br>
+            <br></br>
+            <p class="prod_title"> Product Added Successfully :) <a href="/Product.cshtml/@Category" class="link">Click Here to See</a></p>
+            
+             //Request.Form["Name"]="";
+             //Request.Form["Description"]="";
+             //Request.Form["Price"]="";
+            
+        }
+
+        
+    }
+}
+@section Styles{
+<link rel="stylesheet" type="text/css" href="../style.css" />
+	<link rel="stylesheet" href="../lightbox.css" type="text/css" media="screen" />
+<style>
+    .para{
+        display:inline;
+        padding:0px;
+        margin:0px;
+        height:20px;
+        color: #996600;
+    }
+    .link{
+        display:inline;
+        padding:0px;
+        margin:0px;
+        height:20px;
+        margin:50px 0 0 0;
+        color: #996600;
+    }
+</style>
+	
+}
+
+@section product1{
+
+ @Html.ValidationSummary()
+<div class="title"><span class="title_icon"><img src="~/images/bullet1.gif" alt="" title="" /></span>ADD PRODUCTS</div>
+        
+        	<div class="feat_prod_box_details">
+            <div class="contact_form">
+                <div class="form_subtitle">INSERT BOOKS</div>
+                 <form method="post" name="register" action="" enctype="multipart/form-data">          
+                    <div class="form_row">
+                    <label class="contact"><strong>Book Name:</strong></label>
+                    <input type="text" name="Name" class="contact_input" value="@Name" />
+                    </div>   
+
+                    <div class="form_row">
+                    <label class="contact"><strong>Price:</strong></label>
+                    <input type="text" name="Price" class="contact_input" value="@Price" />
+                    </div>
+
+
+                    <div class="form_row">
+                    <label for="Image" class="contact"><strong>Book Image:</strong></label>
+                    <input type="file" name="Book_Pic" value="Book_Pic"  />
+                    <br/>
+                    <!----<input type="submit" class="register" value="Upload" />-->
+                    
+                    </div>
+                    
+                    <div class="form_row">
+                    <label class="contact"><strong>Category:</strong></label>
+                    <select id="category" name="Category">
+                    <option></option>
+                            @foreach(var row in data)
+                            {
+                            <option value="@row.Title">@row.Title</option>
+                            }
+                    </select>
+                    </div>
+                    
+                   <!---- <div class="form_row">
+                    <label class="contact"><strong>Book Color:</strong></label>
+                    <input type="text" name="Color" class="contact_input" value="@Color" />
+                    </div>-->                    
+                     <div class="form_row">
+                    <label class="contact"><strong>Description:</strong></label>
+                    <textarea class="contact_textarea" value="@Description" name="Description" ></textarea>
+                    <!----<input type="text" name="Description" class="contact_input" value="Description" />-->
+                    </div>
+                   
+
+                    
+                    <div class="form_row">
+                <input type="submit" class="register" value="Insert" />
+                    </div>   
+                  </form>     
+                </div>
+            
+            </div>	
+            
+              
+
+            
+
+            
+        <div class="clear"></div>
+ }

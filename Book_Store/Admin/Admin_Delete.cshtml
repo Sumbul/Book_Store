@@ -1,0 +1,77 @@
+﻿@{
+  Layout="~/Shared/_LayoutAdmin.cshtml";
+  var db = Database.Open("BookStore");
+  var ProductId = UrlData[0];
+  if (ProductId.IsEmpty()) {
+      Response.Redirect("~/Admin/Delete_Product.cstml");
+  }
+  var prod = db.QuerySingle("SELECT * FROM Products WHERE Id = @0", ProductId);
+  if( IsPost && !ProductId.IsEmpty()) {
+    var deleteQueryString = "DELETE FROM Products WHERE Id=@0";
+    db.Execute(deleteQueryString, ProductId);
+    Response.Redirect("~/Admin/Delete_Product.cshtml");
+  }
+}
+@section Styles{
+<link rel="stylesheet" type="text/css" href="~/style.css" />
+	<link rel="stylesheet" href="~/lightbox.css" type="text/css" media="screen" />
+<style>
+    .heading{
+        margin-left: 70px;
+        color:#734633;
+        padding:0px;
+        float:left;
+        font-size:20px;
+    }
+    .product
+    {
+        margin-left: 150px;
+        font-size: 12px;
+        padding:0px;
+        float:left;  
+    }
+    .tab
+    {
+        width:355px;
+        float:left;
+        padding:25px;
+        margin-left:240px;
+       _margin:20px 0 0 5px;
+        border:1px #DFD1D2 dashed;
+        position:relative;
+    }
+   
+</style>
+	
+}
+@section product1{
+    <br></br>
+<div class="heading"><img src="~/images/bullet1.gif" alt="" title="" />Delete Product - Confirmation</div>
+        <br></br>
+<br></br>
+<div class="feat_prod_box_details">
+   
+    <div class="tab">
+ <div class="prod_img"><img src="@Href(prod.Book_Pic)" alt="" title="" border="0" />
+                <br /><br />
+                </div>
+<br /> <br />
+<form method="post" action="" name="form">
+    <p>Are you sure you want to delete the following product?</p>
+<br /> <br /><br /> <br /><br /> <br />
+    <p><b>Name:</b> &nbsp; @prod.Name <br /> <br />
+       <b>Description:</b> &nbsp; @prod.Description <br /><br />
+      <b> Price:</b> &nbsp; $@prod.Price</p>
+    <p><input type="submit" class="register" value="Delete" /></p><br /><br /><br /><br /><br /><br /><br /><br />
+  </form>
+ 
+            
+     </div>         
+</div>
+            
+
+            
+        <div class="clear"></div>
+}
+  
+

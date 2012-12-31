@@ -1,0 +1,100 @@
+﻿
+<!---------------------------------------------------PRODUCT DETAIL PAGE's LAYOUT------------------------------------------------------------------------>
+@{
+    
+    var db=Database.Open("BookStore");
+    
+        var query="SELECT * FROM Categories";
+        var ans=db.Query(query);
+       
+}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Book Store</title>
+    @RenderSection("Styles")
+
+    </head>
+    <body>
+        <div id="wrap">
+            @RenderPage("~/Shared/_HeaderPage.cshtml")
+
+            <div>
+                 @RenderBody()
+            
+               
+             <!---product detail Revolution Book defined in this section-->
+                @RenderSection("product1",false)
+
+                <!---product detail Edgar Book defined in this section-->
+                @RenderSection("product2",false)
+                
+
+                <!---product detail photography Book defined in this section-->
+                @RenderSection("product3",false)
+
+                <!---product detail Finance Book defined in this section-->
+                @RenderSection("product4",false)
+                
+                 <!---product detail Simple food Book defined in this section-->
+                @RenderSection("product5",false)
+
+                 <!---About Page defined in this section-->
+                @RenderSection("about",false)
+
+                 <!---Books Page defined in this section-->
+                @RenderSection("book",false)
+
+                <!---Special Books Page defined in this section-->
+                @RenderSection("special",false)
+
+                 <!---Login Page defined in this section-->
+                @RenderSection("account",false)
+
+                <!---Checkout info Page defined in this section-->
+                @RenderSection("cart",false)
+
+                <!---Contact info Page defined in this section-->
+                @RenderSection("contact",false)
+
+                 <!---Sign Up Page defined in this section-->
+                @RenderSection("signup",false)
+               
+                <!---Promotion product pages-->
+                 <!---Photography Page defined in this section-->
+                @RenderSection("photo",false)
+
+                <!---Cooking Page defined in this section-->
+                @RenderSection("cooking",false)
+
+                <!---Gardening Page defined in this section-->
+                @RenderSection("gard",false)
+
+                <!---Billing info info Page defined in this section-->
+                @RenderSection("bill",false)
+                
+        	
+        
+
+            
+        
+        
+       
+       
+       <div class="clear"></div>
+       </div><!--end of center content-->
+
+        @RenderPage("~/Shared/_FooterPage.cshtml")
+  </div>
+            <script type="text/javascript">
+
+var tabber1 = new Yetii({
+id: 'demo'
+});
+
+</script>
+        </form>
+    </body>
+</html>

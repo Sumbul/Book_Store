@@ -1,0 +1,128 @@
+﻿@{
+     Layout="~/Shared/_LayoutPage2.cshtml";
+     Validation.RequireField("Username", " Username is required.");
+    Validation.RequireField("Password", "Password is required.");
+    Validation.RequireField("Email", "Email is required.");
+    Validation.RequireField("Phoneno", "Phoneno is required.");
+    Validation.RequireField("Address", "Address is required.");
+    //Validation.RequireField("Company", "Company name is required.");
+    Validation.RequireField("terms", "Terms and conditions check is required.");
+
+
+     var username="";
+    var password="";
+    var Email="";
+    var Phoneno="";
+    var Address="";
+   /* var querystring="";
+    var db=Database.Open("BookStore");*/
+    
+    
+    /*Phoneno=Request.Form["Phoneno"];
+    Address=Request.Form["Address"];
+    Company=Request.Form["Company"];*/
+
+    if(IsPost && Validation.IsValid())
+    {
+        /*querystring="INSERT INTO SignUp(Username,Password,Email,Phoneno,Company,Address)"+"VALUES(@0,@1,@2,@3,@4,@5)";
+        db.Execute(querystring,Username,Password,Email,Phoneno,Company,Address);*/
+
+       username=Request["Username"];
+       password=Request["Password"];
+       Email=Request.Form["Email"];
+       Phoneno=Request.Form["Phoneno"];
+       Address=Request.Form["Address"];
+
+        if(!WebSecurity.UserExists(username))
+        {
+       
+        WebSecurity.CreateUserAndAccount(userName:username,
+                                        password: password,
+                                        propertyValues: new { email = Email,
+                                                              phoneno=Phoneno,
+                                                              Address=Address });
+         Response.Redirect("~/Default.cshtml");
+
+       // WebSecurity.CreateUserAndAccount(username, password1, null, false);
+       // WebSecurity.Login(username, password1);
+      //  Response.Redirect("default");
+        }
+    }
+   
+}
+@section Styles{
+<link rel="stylesheet" type="text/css" href="../style.css" />
+	<link rel="stylesheet" href="lightbox.css" type="text/css" media="screen" />
+	<!--Plugin for Zoom-->
+	<script src="js/prototype.js" type="text/javascript"></script>
+	<script src="js/scriptaculous.js?load=effects" type="text/javascript"></script>
+	<script src="js/lightbox.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/java.js"></script>
+    <!--End of plugin-->
+}
+
+@section signup{
+
+ @Html.ValidationSummary()
+     <div class="title"><span class="title_icon"><img src="images/bullet1.gif" alt="" title="" /></span>Register</div>
+        
+        	<div class="feat_prod_box_details">
+           
+            
+              	<div class="contact_form">
+                <div class="form_subtitle">Create New Account</div>
+                 <form method="post" name="register" action="">          
+                    <div class="form_row">
+                    <label class="contact"><strong>Username:</strong></label>
+                    <input type="text" name="Username" class="contact_input" value="@username" />
+                    </div>  
+
+
+                    <div class="form_row">
+                    <label class="contact"><strong>Password:</strong></label>
+                    <input type="password" name="Password" class="contact_input" value="@password" />
+                    </div> 
+
+                    <div class="form_row">
+                    <label class="contact"><strong>Email:</strong></label>
+                    <input type="text" name="Email" class="contact_input" value="@Email" />
+                    </div>
+
+
+                    <div class="form_row">
+                    <label class="contact"><strong>Phone:</strong></label>
+                    <input type="text" name="Phoneno" class="contact_input" value="@Phoneno" />
+                    </div>
+                    
+                   <!---- <div class="form_row">
+                    <label class="contact"><strong>Company:</strong></label>
+                    <input type="text" name="Company" class="contact_input" value="" />
+                    </div>-->
+                    
+                    <div class="form_row">
+                    <label class="contact"><strong>Address:</strong></label>
+                    <input type="text" name="Address" class="contact_input" value="@Address" />
+                    </div>                    
+
+                    <div class="form_row">
+                        <div class="terms">
+                        <input type="checkbox" name="terms" />
+                        I agree to the terms &amp; conditions                        </div>
+                    </div>
+
+                    
+                    <div class="form_row">
+                    <input type="submit" class="register" value="Register" />
+                    </div>   
+                  </form>     
+                </div>  
+            
+          </div>	
+            
+              
+
+            
+
+            
+        <div class="clear"></div>
+}

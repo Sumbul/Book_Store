@@ -1,0 +1,55 @@
+﻿@{
+   Layout="~/Shared/_LayoutPage1.cshtml";
+ 
+    var db = Database.Open("BookStore");
+    var selectQueryString = "SELECT * FROM Products WHERE Category=@0";
+   
+   var categoryTitle  = UrlData[0];
+    if (categoryTitle == null) {
+         Response.Redirect("~/Default.cshtml");
+
+    }
+
+    var products = db.Query(selectQueryString, categoryTitle);
+    
+   
+
+}
+@section Styles{
+<link rel="stylesheet" type="text/css" href="../style.css" />
+
+        <!--Plugin for Slider-->
+        <link rel="stylesheet" href="../Slider/nivo-slider.css" type="text/css" media="screen" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script src="../Slider/jquery.nivo.slider.pack.js" type="text/javascript"></script>
+        <!--End of plugin-->
+}
+@section Pro{
+        	<form method="post" name="register" action="~/Product_Detail.cshtml">
+            
+              <div class="title"><span class="title_icon"><img src="~/images/bullet1.gif" alt="" title="" /></span>@categoryTitle</div>
+          @foreach(var row in products)
+          {
+        	<div class="feat_prod_box">
+          
+            	<div class="prod_img"><a href="/Product_Detail.cshtml/@row.Id"><img src="@Href(row.Book_Pic)" alt="" title="" border="0" /></a></div>
+                
+                <div class="prod_det_box">
+                	<div class="box_top"></div>
+                    <div class="box_center">
+                    <div class="prod_title">@row.Name</div>
+                        <br></br>
+                    <a href="/Product_Detail.cshtml/@row.Id" class="more">- For more details click here -</a>
+                    <div class="clear"></div>
+                    </div>
+            
+                    <div class="box_bottom"></div>
+                </div>  
+             
+            <div class="clear"></div>
+            </div>	
+            }
+            </form>   
+             
+        }
+

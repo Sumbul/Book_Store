@@ -1,0 +1,137 @@
+﻿
+<!----------------------------------------------------------------Main_Page Layout--------------------------------------------------------------------------------->
+@{
+    
+    var db=Database.Open("BookStore");
+    
+        var query="SELECT * FROM Categories";
+        var ans=db.Query(query);
+       
+}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Main Page</title>
+        <title>Book Store</title>
+        
+        @RenderSection("Styles")
+         
+    </head>
+    <body>
+       
+       <div id="wrap">
+           <!--Header-->
+           @RenderPage("~/Shared/_HeaderPage.cshtml")
+
+           <div class="center_content">
+               @RenderBody()
+
+<!--Slider-->
+
+<div class="slider-wrapper">
+    <div id="slider" class="nivoSlider">
+        
+        <img src="~/images/181.jpg" alt="" title="#htmlcaption" />
+        <img src="~/images/10.jpg" alt="" title="Your Book Store" />
+        <img src="~/images/7.jpg" alt="" />
+        <img src="~/images/11.jpg" alt="" />
+        <img src="~/images/13.jpg" alt="" />
+        <img src="~/images/15.jpg" alt="" />
+     </div>
+</div>
+               
+<!--end of Slider-->
+
+       	<div class="left_content">
+        	
+            
+               @RenderSection("Main",false)
+
+               @RenderSection("Pro",false)
+               
+               
+               
+        </div> <!--end of left content-->
+        
+        <div class="right_content">
+            <div class="languages_box">
+            <span class="red">Follow us on:</span>
+            @LinkShare.GetHtml("LinkShare Example",
+                pageLinkBack: "http://www.asp.net",
+                linkSites: new LinkShareSite[] { LinkShareSite.Twitter,
+                LinkShareSite.Facebook,
+                LinkShareSite.Reddit,
+                LinkShareSite.StumbleUpon,
+                LinkShareSite.All })
+                </div>
+        	<!----<div class="languages_box">
+            <span class="red">Languages:</span>
+            <a href="#" class="selected"><img src=@Href("~/images/gb.gif") alt="" title="" border="0" /></a>
+            <a href="#"><img src=@Href("~/images/fr.gif") alt="" title="" border="0" /></a>
+            <a href="#"><img src=@Href("~/images/de.gif") alt="" title="" border="0" /></a>
+            </div>
+                
+           <div class="currency">
+                <span class="red">Currency: </span>
+                <a href="#">GBP</a>
+                <a href="#">EUR</a>
+                <a href="#" class="selected">USD</a>
+                </div>-->
+                
+                
+              <div class="cart">
+                  <div class="title"><span class="title_icon"><img src=@Href("~/images/cart.gif") alt="" title="" /></span>My cart</div>
+                  <div class="home_cart_content">
+                  Items will be in your cart <span class="red"></span>
+                  </div>
+                  <a href="Cart.cshtml" class="view_cart">view cart</a>
+              
+              </div>
+                       
+            <form method="post" name="register" action="~/Product.cshtml">
+             <div class="right_box">
+             
+             	<div class="title"><span class="title_icon"><img src=@Href("~/images/bullet5.gif") alt="" title="" /></span>Categories</div> 
+                `
+                <ul class="list">
+                @foreach(var row in ans)
+                {
+                <li><a href="/Product.cshtml/@row.Title"><b>@row.Title</b></a></li>
+                 
+                    
+                }
+                    </br>
+                    @Facebook.LikeButton("http://localhost:11181/")
+                    </br> </br></br>                                            
+                </ul>
+                 
+             </div> 
+             
+                     
+             <img src=@Href("~/images/add2.jpg") alt="" title="" />
+                         
+        </div><!--end of right content-->
+        
+        
+       
+       
+       <div class="clear"></div>
+       </div><!--end of center content-->
+
+            <!--Footer-->
+   @RenderPage("~/Shared/_FooterPage.cshtml")
+       </div> 
+
+
+        <!--Script for slider-->
+
+        <script type="text/javascript">
+            $(window).load(function() {
+           $('#slider').nivoSlider();
+        });
+        </script>
+</form>
+    </body>
+</html>

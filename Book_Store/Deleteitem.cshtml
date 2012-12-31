@@ -1,0 +1,23 @@
+﻿@{
+    int id=UrlData[0].AsInt();
+    Cart c = (Cart) Session["cart"];
+    int count=c.Items.Count;
+    <p>@count</p>
+   // int j=0;
+    //Cart c2 = new Cart();
+    for(int i=0;i<count;i++)
+    {
+        
+        if(id==c.Items[i].ProductID)
+        {
+            c.RemoveItem(i);
+            Session["cart"]=c;
+            Response.Redirect("~/Cart.cshtml");
+        }
+       
+
+    }
+    
+    //
+}
+

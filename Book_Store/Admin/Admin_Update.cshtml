@@ -1,0 +1,167 @@
+﻿@{
+  Layout="~/Shared/_LayoutAdmin.cshtml";
+  Validation.RequireField("Name", "Product name is required.");
+    Validation.RequireField("Description", "Product description is required.");
+    Validation.RequireField("Price", "Product price is required.");
+    Validation.RequireField("Category", "Product category is required.");
+
+    var db = Database.Open("BookStore");
+    var q = "SELECT * FROM Categories ORDER BY Category_Id";
+    var data = db.Query(q);
+
+    var selectQueryString = "SELECT * FROM Products WHERE Id=@0";
+
+    var ProductId  = UrlData[0];
+    if (ProductId.IsEmpty()) {
+         Response.Redirect("~/Admin/Edit_Product.cshtml");
+    }
+
+    var row = db.QuerySingle(selectQueryString, ProductId);
+    var Name = row.Name;
+    var Description = row.Description;
+    var Price = row.Price;
+    var Category=row.Category;
+    var Book_Pic=row.Book_Pic;
+    var Zoom=row.Zoom;
+    
+    var uName = Request.Form["Name"];
+    var uDescription = Request.Form["Description"];
+    var uPrice = Request.Form["Price"];
+    var uCategory=Request.Form["Category"];
+    var uBook_Pic="";
+    var uZoom="";
+
+    //getting image 
+     WebImage photo = null;
+    var newFileName = "";
+    var imagePath = "";
+    var imageThumbPath="";
+    
+    if (IsPost && Validation.IsValid()) {
+         photo = WebImage.GetImageFromRequest();
+        if(photo != null){
+            newFileName =    Path.GetFileName(photo.FileName);
+            
+            imagePath = @"images/" + newFileName;
+           //var Image = "../images/" + newFileName;
+            photo.Save(@"~\"+imagePath);
+
+            // zoom image
+            imageThumbPath = @"images\Zoom\" + newFileName;
+            photo.Resize(width: 200, height: 300, preserveAspectRatio: false,
+               preventEnlarge: false);
+            photo.Save(@"~\" + imageThumbPath);
+            uBook_Pic= "~/images/" + newFileName;
+                uZoom="~/images/Zoom/"+newFileName;
+             
+        }
+        else
+        {
+            uBook_Pic=Book_Pic;
+                uZoom=Zoom;
+        }
+     
+        
+                
+         
+            
+
+        var updateQueryString =
+            "UPDATE Products SET Name=@0, Description=@1, Price=@2,Book_Pic=@3, Category=@4,Zoom=@5 WHERE Id=@6" ;
+        db.Execute(updateQueryString, uName, uDescription, uPrice,uBook_Pic,uCategory,uZoom, ProductId);
+        Response.Redirect(@Href("~/Admin/Edit_Product.cshtml"));
+    }
+}
+@section Styles{
+<link rel="stylesheet" type="text/css" href="~/style.css" />
+	<link rel="stylesheet" href="~/lightbox.css" type="text/css" media="screen" />
+	<style>
+    .heading{
+        margin-left: 50px;
+        color:#734633;
+        padding:0px;
+        float:left;
+        font-size:20px;
+    }
+    .product
+    {
+        margin-left: 150px;
+        
+        padding:0px;
+        float:left;  
+    }
+</style>
+}
+@section product1{
+<br></br><br></br>
+ @Html.ValidationSummary()
+<div class="heading"><span class="title_icon"><img src="~/images/bullet1.gif" alt="" title="" /></span>UPDATE PRODUCTS</div>
+
+<br></br>
+<br></br>
+
+        <div class="product">
+        	<div class="feat_prod_box_details">
+            <div class="contact_form">
+                <div class="form_subtitle">Update Information</div>
+                 <form method="post" name="register" action="" enctype="multipart/form-data">          
+                    <div class="form_row">
+                    <label class="contact"><strong>Book Name:</strong></label>
+                    <input type="text" name="Name" class="contact_input" value="@Name" />
+                    </div>   
+
+                    <div class="form_row">
+                    <label class="contact"><strong>Price:</strong></label>
+                    <input type="text" name="Price" class="contact_input" value="@Price" />
+                    </div>
+
+
+                    <div class="form_row">
+                    <label for="Image" class="contact"><strong>Book Image:</strong></label>
+                    <input type="file" name="Book_Pic" value="@Book_Pic"  />
+                    <br/>
+                    <!----<input type="submit" class="register" value="Upload" />-->
+                    
+                    </div>
+                    
+                    <div class="form_row">
+                    <label class="contact"><strong>Category:</strong></label>
+                    <select id="category" name="Category">
+                    <option>@Category</option>
+                            @foreach(var ans in data)
+                            {
+                            <option value="@ans.Title">@ans.Title</option>
+                            }
+                    </select>
+                    </div>
+                    
+                                    
+                     <div class="form_row">
+                    <label class="contact"><strong>Description:</strong></label>
+                 <!----   <textarea class="contact_textarea" value="Description" name="Description" ></textarea>-->
+                    <input type="text" name="Description" class="contact_input" value="@Description" />
+                    </div>
+                   
+
+                    
+                    <div class="form_row">
+                <input type="submit" class="register" value="Update" />
+                    </div>   
+                  </form>     
+                </div>
+            
+            </div>	
+            
+              
+            </div>
+            
+
+             <br></br><br></br>  
+        <div class="clear"></div>
+<br></br>
+<br></br>
+<br></br>
+
+ }
+  
+
